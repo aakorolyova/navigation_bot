@@ -14,10 +14,6 @@ from rasa_sdk.events import SlotSet
 from utils.actions import avg_lengths
 
 
-#   for event in tracker.events:
-#        if event.get("event") == "bot":
-#            print("bot",event.get("text"))
- 
 class ActionSetUserFeats(Action):
 
     def name(self) -> Text:
