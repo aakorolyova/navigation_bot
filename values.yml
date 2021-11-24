@@ -1,0 +1,6 @@
+# app (custom action server) specific settings
+app:
+    # name of the custom action server image to use
+    name: "aakorolyova/rasa_bot"
+    # tag refers to the custom action server image tag
+    tag: "navigation_image"
