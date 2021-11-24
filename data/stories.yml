@@ -1,0 +1,408 @@
+version: "2.0"
+
+stories:
+
+- story: Navigate
+  steps:
+    - intent: Navigate
+      entities:
+      - location: "Baxter Building 42nd street Madison Avenue Manhattan"
+        role: to
+    - action: action_find_destination
+    - slot_was_set:
+      - main_destination: "Baxter Building 42nd street Madison Avenue Manhattan"
+    - action: action_set_user_feats
+    - slot_was_set:
+      - is_talkative: true
+    - action: action_start_navigation
+    - action: utter_navigation_started
+    - action: action_listen
+
+- story: Open_gps
+  steps:
+    - intent: Navigate
+      entities:
+      - location: null
+    - action: action_find_destination
+    - slot_was_set:
+      - main_destination: null
+    - action: action_set_user_feats
+    - slot_was_set:
+      - is_talkative: true
+    - action: utter_ask_for_destination
+    - action: action_listen
+    - intent: Navigate
+      entities:
+      - location: "Baxter Building 42nd street Madison Avenue Manhattan"
+        role: to
+    - action: action_find_destination
+    - slot_was_set:
+      - main_destination: "Baxter Building 42nd street Madison Avenue Manhattan"
+    - action: action_start_navigation
+    - action: utter_navigation_started
+    - action: action_listen
+
+- story: Add_to_database
+  steps:
+    - intent: add_to_database
+      entities:
+        - location: "5 Wall Street"
+        - to_database: "work"
+    - action: action_add_to_database
+    - action: utter_database_updated
+
+- story: Search_places_several_options
+  steps:
+    - intent: Search_places
+      entities:
+      - location_type: "best restaurants"
+    - action: action_set_user_feats
+    - slot_was_set:
+      - is_talkative: false
+    - action: action_search_places
+    - slot_was_set:
+        - search_results: option1, option2, option3
+        - search_results_count: 3.0
+    - action: action_listen
+    - intent: Search_places_response
+      entities:
+        - number: two
+    - action: action_select_place
+    - slot_was_set:
+        - include-point: option2
+    - action: action_start_navigation
+
+- story: Search_places_one_option
+  steps:
+    - intent: Search_places
+      entities:
+      - location_type: fuel station
+    - action: action_set_user_feats
+    - slot_was_set:
+      - is_talkative: false
+    - action: action_search_places
+    - slot_was_set:
+        - search_results: option1
+        - search_results_count: 1.0
+    - action: action_listen
+    - intent: Navigate
+    - slot_was_set:
+      - main_destination: null
+    - action: action_select_place
+    - slot_was_set:
+      - main_destination: option1
+    - action: action_start_navigation
+
+
+- story: interactive_story_1
+  steps:
+  - intent: Navigate
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: null
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: false
+  - action: utter_ask_for_destination
+  - action: action_listen
+  - intent: Navigate
+    entities:
+    - location: Baker Street 5
+      role: to
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: Baker Street 5
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+
+- story: interactive_story_2
+  steps:
+  - intent: Navigate
+    entities:
+    - location: 4 South road
+      role: to
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: 4 South road
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: true
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: fuel station
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1, option2, option3
+      - search_results_count: 3.0
+  - action: action_listen
+  - intent: Search_places_response
+    entities:
+      - number: one
+  - action: action_select_place
+  - slot_was_set:
+    - include-point: option1
+  - action: action_listen
+
+- story: interactive_story_3
+  steps:
+  - intent: Navigate
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: null
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: false
+  - action: utter_ask_for_destination
+  - action: action_listen
+  - intent: Navigate
+    entities:
+    - location: 3 Rysdale Crescent
+      role: to
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: 3 Rysdale Crescent
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  - action: action_listen
+  
+- story: interactive_story_4
+  steps:
+  - intent: Navigate
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: null
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: false
+  - action: utter_ask_for_destination
+  - action: action_listen
+  - intent: Navigate
+    entities:
+    - location: Hutts Farm
+      role: to
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: Hutts Farm
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  
+- story: interactive_story_5
+  steps:
+  - intent: Navigate
+    entities:
+    - from: Birmingham
+    - location: London
+      role: to
+  - slot_was_set:
+    - from: Birmingham
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: London
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: true
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: fuel station
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1, option2, option3
+      - search_results_count: 3.0
+  - action: action_listen
+  - intent: Search_places_response
+    entities:
+      - number: one
+  - action: action_select_place
+  - slot_was_set:
+    - include-point: option1
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: shop
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1
+      - search_results_count: 1.0
+  - action: action_select_place
+  - slot_was_set:
+    - include-point: option1
+  - action: action_listen
+
+
+- story: add_Stop_1
+  steps:
+  - intent: Navigate
+    entities:
+    - location: 4 West drive
+      role: to
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: 4 West drive
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: false
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: fuel station
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1, option2, option3
+      - search_results_count: 3.0
+  - action: action_listen
+  - intent: Search_places_response
+    entities:
+      - number: one
+  - action: action_select_place
+  - slot_was_set:
+    - include-point: option1
+  - action: action_listen
+  
+- story: interactive_story_6
+  steps:
+  - intent: Navigate
+    entities:
+    - location: North road 6
+    - location: Sunny Lane 3
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: Sunny Lane 3
+  - slot_was_set:
+    - from: North road 6
+  - slot_was_set:
+    - include-point: null
+  - slot_was_set:
+    - exclude-point: null
+  - slot_was_set:
+    - route-type: null
+  - slot_was_set:
+    - road-type: null
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: true
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: shop
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1
+      - search_results_count: 1.0
+  - action: action_select_place
+  - slot_was_set:
+    - include-point: option1
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: restaurant
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1, option2
+      - search_results_count: 2.0
+  - action: action_listen
+  - intent: Search_places_response
+    entities:
+      - number: two
+  - action: action_select_place
+  - slot_was_set:
+    - include-point:
+      - option1
+      - option2
+  - action: action_listen
+
+- story: mix_navigate_and_search_places
+  steps:
+  - intent: Navigate
+    entities:
+    - location: North road 6
+    - location: Sunny Lane 3
+  - action: action_find_destination
+  - slot_was_set:
+    - main_destination: Sunny Lane 3
+  - slot_was_set:
+    - from: North road 6
+  - slot_was_set:
+    - include-point: null
+  - slot_was_set:
+    - exclude-point: null
+  - slot_was_set:
+    - route-type: null
+  - slot_was_set:
+    - road-type: null
+  - action: action_set_user_feats
+  - slot_was_set:
+    - is_talkative: true
+  - action: action_start_navigation
+  - action: utter_navigation_started
+  - action: action_listen
+  - intent: Search_places
+    entities:
+    - location_type: fuel
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1, option2
+      - search_results_count: 2.0
+  - action: action_listen
+  - intent: Search_places_response
+    entities:
+      - number: two
+  - action: action_select_place
+  - slot_was_set:
+    - include-point:
+      - option2
+  - action: action_listen
+  - intent: Search_places
+    entities:
+      - location_type: restaurant
+  - action: action_search_places
+  - slot_was_set:
+      - search_results: option1, option2, option3
+      - search_results_count: 3.0
+  - action: action_listen
+  - intent: Search_places_response
+    entities:
+      - number: two
+  - action: action_select_place
+  - slot_was_set:
+    - include-point:
+      - option2
+
+- story: interactive_story_1
+  steps:
+  - intent: add_to_database
+    entities:
+    - location: 3 Fairfield avenue
+    - location: home
+  - action: action_add_to_database
+  - action: utter_database_updated
+
+- story: interactive_story_1
+  steps:
+  - intent: add_to_database
+    entities:
+    - location: 6 Great Manchester road
+    - location: work
+  - action: action_add_to_database
+  - action: utter_database_updated
+
+- story: interactive_story_1
+  steps:
+  - intent: add_to_database
+    entities:
+    - location: 6 High Main drive
+    - location: work
+  - action: action_add_to_database
+  - action: utter_database_updated

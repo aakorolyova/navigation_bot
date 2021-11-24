@@ -1,0 +1,115 @@
+version: '2.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- Add_to_database
+- Search_places
+- Cancel
+- Navigate
+- Navigation_distance
+- Navigation_time
+- Navigation_turn
+- Search_places_response
+entities:
+- any
+- direction
+- location
+- location_type
+- number
+- road-type
+- route-type
+- sort
+- to_database
+slots:
+  main_destination:
+    type: text
+    influence_conversation: true
+  from:
+    type: text
+    initial_value: current location
+    influence_conversation: false
+  exclude-point:
+    type: list
+    influence_conversation: false
+  include-point:
+    type: list
+    influence_conversation: false
+  route-type:
+    type: text
+    influence_conversation: false
+  road-type:
+    type: text
+    influence_conversation: false
+  is_talkative:
+    type: bool
+    influence_conversation: false
+  is_formal:
+    type: bool
+    influence_conversation: false
+  last_reprompt:
+    type: text
+    influence_conversation: false
+  search_results:
+    type: list
+    influence_conversation: false
+  search_results_count:
+    type: float
+    influence_conversation: true
+    max_value: 1.0
+    min_value: 0.0
+responses:
+  utter_greet:
+  - text: Hello! How can I help?
+  utter_goodbye:
+  - text: Talk to you later!
+  utter_ask_for_destination:
+  - text: Where do you want to go?
+  utter_destination_found:
+  - condition:
+    - type: slot
+      name: is_talkative
+      value: true
+    text: Hey, sure. Destination {main_destination} found
+  - text: Destination {main_destination} found
+  utter_navigation_started:
+  - condition:
+    - type: slot
+      name: is_talkative
+      value: true
+    text: Hey, sure. Starting navigation from {from} to {main_destination}
+  - text: Navigating from {from} to {main_destination}
+  utter_ok:
+  - text: Ok
+  utter_distance:
+  - text: Distance is calculated
+  utter_time:
+  - text: Time is calculated
+  utter_youarewelcome:
+  - text: You're very welcome.
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_get_started:
+  - text: I can help you with navigation
+  utter_ask_rephrase:
+  - text: I'm sorry, I didn't quite understand that. Could you rephrase?
+  - text: Sorry, I didn't catch that, can you rephrase?
+  - text: Apologies, I didn't understand. Could you please rephrase it?
+  utter_default:
+  - text: I'm sorry, I can't help you.
+  utter_database_updated:
+  - text: Database updated
+actions:
+- action_add_to_database
+- action_check_distance_to_destination
+- action_check_time_to_destination
+- action_exclude_stop
+- action_find_destination
+- action_reprompt
+- action_search_places
+- action_select_place
+- action_set_user_feats
+- action_start_navigation
+- utter_ask_for_destination
+- utter_database_updated
+- utter_navigation_started
